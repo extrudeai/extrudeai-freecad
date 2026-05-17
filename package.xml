@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<package format="1" xmlns="https://wiki.freecad.org/Package_Metadata">
+  <name>extrude-ai</name>
+  <description>AI-assisted CAD agent for FreeCAD. Chat with an AI inside FreeCAD to model parts, edit sketches, run features, and inspect geometry. (This package is the bootstrap; the active addon code lives under versions/&lt;x.y.z&gt;/ and auto-updates on each launch.)</description>
+  <version>1.0.0</version>
+  <date>2026-05-16</date>
+  <maintainer email="dev@extrude-ai.com">extrude-ai</maintainer>
+  <author email="dev@extrude-ai.com">extrude-ai</author>
+  <license>Proprietary</license>
+  <url type="website">https://extrude-ai.com</url>
+  <url type="repository" branch="main">https://github.com/extrudeai/freecad-addon</url>
+  <url type="bugtracker">https://github.com/extrudeai/freecad-addon/issues</url>
+  <icon>icon.svg</icon>
+  <tag>AI</tag>
+  <tag>assistant</tag>
+  <tag>chat</tag>
+  <tag>PartDesign</tag>
+  <freecadmin>1.0.0</freecadmin>
+  <content>
+    <!-- Panel-only addon: declares <workbench> only so FreeCAD's Mod loader
+         exec's InitGui.py. No FreeCADGui.addWorkbench() is actually called.
+         Matches the convention used by FreeCAD's own AddonManager. -->
+    <workbench>
+      <name>extrude-ai</name>
+      <description>AI-assisted CAD agent — chat panel for FreeCAD.</description>
+      <subdirectory>./</subdirectory>
+      <icon>icon.svg</icon>
+    </workbench>
+  </content>
+</package>
