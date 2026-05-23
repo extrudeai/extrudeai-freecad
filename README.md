@@ -4,7 +4,7 @@ This repository hosts the bootstrap files for the **[extrude-ai](https://www.ext
 
 ## Install
 
-1. Open FreeCAD (1.0 or later).
+1. Open FreeCAD (1.1 or later).
 2. **Edit -> Preferences -> Addon Manager**.
 3. Under **Custom Repositories**, click **+** and paste:
 
