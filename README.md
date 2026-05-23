@@ -1,6 +1,6 @@
 # extrude-ai — FreeCAD addon bootstrap
 
-This repository hosts the bootstrap files for the **[extrude-ai](https://extrude-ai.com)** FreeCAD addon. It is intended to be installed via FreeCAD's built-in **Addon Manager**.
+This repository hosts the bootstrap files for the **[extrude-ai](https://www.extrudeai.com)** FreeCAD addon. It is intended to be installed via FreeCAD's built-in **Addon Manager**.
 
 ## Install
 
@@ -9,7 +9,7 @@ This repository hosts the bootstrap files for the **[extrude-ai](https://extrude
 3. Under **Custom Repositories**, click **+** and paste:
 
    ```
-   https://github.com/extrudeai/freecad-addon
+   https://github.com/extrudeai/extrudeai-freecad
    ```
 
    Branch: `main`
@@ -36,11 +36,11 @@ The proprietary CAD logic (`adapters/`, `ui/`, `ws_client.py`, etc.) is **not** 
 ## License
 
 - The bootstrap glue files in this repository: **MIT License** — see [`LICENSE`](LICENSE).
-- The extrude-ai addon as a whole (including the downloaded mixin code): **Proprietary** — see [extrude-ai.com](https://extrude-ai.com).
+- The extrude-ai addon as a whole (including the downloaded mixin code): **Proprietary** — see [extrudeai.com](https://www.extrudeai.com).
 
 ## Bug reports
 
-Please file bugs at https://github.com/extrudeai/freecad-addon/issues.
+Please file bugs at https://github.com/extrudeai/extrudeai-freecad/issues.
 
 ## Source
 

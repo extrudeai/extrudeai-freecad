@@ -1,4 +1,4 @@
-# extrudeai/freecad-addon — public bootstrap repo .gitignore
+# extrudeai/extrudeai-freecad — public bootstrap repo .gitignore
 #
 # CRITICAL: `versions/` is the directory where the addon's `_firstrun.py`
 # downloads the proprietary mixin code (~50 MB) on first launch. It is

@@ -7,9 +7,9 @@
   <maintainer email="dev@extrude-ai.com">extrude-ai</maintainer>
   <author email="dev@extrude-ai.com">extrude-ai</author>
   <license>Proprietary</license>
-  <url type="website">https://extrude-ai.com</url>
-  <url type="repository" branch="main">https://github.com/extrudeai/freecad-addon</url>
-  <url type="bugtracker">https://github.com/extrudeai/freecad-addon/issues</url>
+  <url type="website">https://www.extrudeai.com</url>
+  <url type="repository" branch="main">https://github.com/extrudeai/extrudeai-freecad</url>
+  <url type="bugtracker">https://github.com/extrudeai/extrudeai-freecad/issues</url>
   <icon>icon.svg</icon>
   <tag>AI</tag>
   <tag>assistant</tag>

@@ -28,4 +28,4 @@ _updater.py, package.xml, icon.svg).
 
 The extrude-ai addon as a whole — including the versioned mixin code that
 the bootstrap downloads at first launch from gs://extrude-ai-installer —
-is proprietary software. See https://extrude-ai.com for terms of use.
+is proprietary software. See https://www.extrudeai.com for terms of use.
