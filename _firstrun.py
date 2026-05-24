@@ -20,10 +20,16 @@ import json
 import logging
 import platform
 import sys
+import threading
 from pathlib import Path
+from typing import Callable
 from urllib.request import Request, urlopen
 
+import _bootstrap
+
 logger = logging.getLogger("extrude-ai.firstrun")
+
+_UPDATE_LOCK = threading.Lock()
 
 _INSTALLER_BUCKET_BASE = "https://storage.googleapis.com/extrude-ai-installer"
 _CHANNEL = "stable"
@@ -55,6 +61,65 @@ def fetch_manifest() -> dict:
     req = Request(url, headers={"User-Agent": "extrude-ai-firstrun/1"})
     with urlopen(req, timeout=_FETCH_TIMEOUT) as resp:  # noqa: S310 – trusted URL
         return json.loads(resp.read().decode("utf-8"))
+
+
+def check_for_updates(
+    addon_root: Path,
+    on_progress: Callable[[int, int], None] | None = None,
+    frame: dict | None = None,
+) -> str | None:
+    """Download a newer addon version when one is available.
+
+    When ``frame`` is omitted, fetches the public manifest and compares the
+    installed version to ``channels.stable.latest``.  When ``frame`` is provided
+    (e.g. from a backend ``addon_update`` WebSocket message), applies it directly.
+
+    Returns the staged version string on success, else None.  Never raises.
+    """
+    import _updater  # noqa: PLC0415 — bootstrap-local module
+
+    versions_dir = addon_root / "versions"
+    if _updater._is_dev_mode(versions_dir):
+        logger.debug("Dev mode — skipping update check.")
+        return None
+
+    with _UPDATE_LOCK:
+        try:
+            if frame is None:
+                manifest = fetch_manifest()
+                platform_tag = pick_platform_tag()
+                current = _bootstrap.read_active_version(addon_root)
+                channel = manifest.get("channels", {}).get(_CHANNEL, {})
+                latest = str(channel.get("latest") or "")
+                if not latest:
+                    logger.warning("Manifest has no stable latest version.")
+                    return None
+                cmp = _bootstrap.compare_semver(current, latest)
+                if cmp is None:
+                    logger.warning(
+                        "Cannot compare versions current=%r latest=%r",
+                        current,
+                        latest,
+                    )
+                    return None
+                if cmp >= 0:
+                    logger.debug(
+                        "Addon up to date (current=%s latest=%s).", current, latest
+                    )
+                    return None
+                frame = _build_update_frame(manifest, platform_tag)
+                logger.info(
+                    "Update available: %s -> %s (%s)", current, latest, platform_tag
+                )
+
+            latest = str(frame["latest_version"])
+            ok = _updater.apply_addon_update(
+                frame, addon_root, on_progress=on_progress
+            )
+            return latest if ok else None
+        except Exception as exc:
+            logger.error("check_for_updates failed: %s", exc)
+            return None
 
 
 def download_initial_version(addon_root: Path) -> bool:

@@ -31,6 +31,28 @@ def _parse_semver(s: str) -> tuple[int, ...] | None:
         return None
 
 
+def compare_semver(a: str, b: str) -> int | None:
+    """Compare two semver strings. Returns -1, 0, 1, or None if either is invalid."""
+    va = _parse_semver(a)
+    vb = _parse_semver(b)
+    if va is None or vb is None:
+        return None
+    if va < vb:
+        return -1
+    if va > vb:
+        return 1
+    return 0
+
+
+def staged_version_pending_restart(addon_root: Path, running_version: str) -> str | None:
+    """Return staged ``current.txt`` version if newer than ``running_version``, else None."""
+    staged = read_active_version(addon_root)
+    cmp = compare_semver(running_version, staged)
+    if cmp is not None and cmp < 0:
+        return staged
+    return None
+
+
 def select_version_dir(addon_root: Path) -> Path:
     """Return the path of the active addon version directory."""
     versions_dir = addon_root / "versions"

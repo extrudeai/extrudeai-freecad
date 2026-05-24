@@ -17,6 +17,7 @@ restart.
 """
 
 import sys
+import threading
 from pathlib import Path
 
 import _bootstrap  # noqa: I001 — FreeCAD added the addon root to sys.path
@@ -75,6 +76,28 @@ import FreeCAD  # type: ignore[import]
 FreeCAD.Console.PrintMessage(
     f"[extrude-ai bootstrap] Loading addon from versions/{_version_dir.name}\n"
 )
+
+def _bootstrap_startup_update_check() -> None:
+    try:
+        import _firstrun  # noqa: PLC0415 — bootstrap root module
+
+        staged = _firstrun.check_for_updates(_addon_root)
+        if staged:
+            FreeCAD.Console.PrintMessage(
+                f"[extrude-ai bootstrap] Addon v{staged} staged. "
+                "Restart FreeCAD to activate.\n"
+            )
+    except Exception as exc:
+        FreeCAD.Console.PrintMessage(
+            f"[extrude-ai bootstrap] Startup update check failed: {exc}\n"
+        )
+
+
+threading.Thread(
+    target=_bootstrap_startup_update_check,
+    daemon=True,
+    name="extrude-ai-bootstrap-update",
+).start()
 
 with open(_version_dir / "InitGui.py", "rb") as _f:
     exec(compile(_f.read(), str(_version_dir / "InitGui.py"), "exec"))
