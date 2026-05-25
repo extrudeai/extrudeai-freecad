@@ -84,13 +84,34 @@ def read_active_version(addon_root: Path) -> str:
 
     Falls back to "0.0.0" if nothing useful is on disk; the backend treats
     that as "force-update if any version is published".
+
+    If current.txt names a version whose directory no longer exists (stale
+    pointer from a failed download or manual cleanup), we report the highest
+    semver directory that is actually present so the update check correctly
+    detects that a newer version is needed.
     """
     versions_dir = addon_root / "versions"
     current_file = versions_dir / "current.txt"
     if current_file.exists():
         v = current_file.read_text(encoding="utf-8").strip()
         if v:
-            return v
+            target = versions_dir / v
+            if target.is_dir() or v == "dev":
+                return v
+            # Stale current.txt — the named directory is gone.  Report the
+            # highest semver dir that actually exists so downstream callers
+            # (check_for_updates) don't falsely believe the missing version
+            # is already installed.
+            candidates = []
+            for child in versions_dir.iterdir():
+                if not child.is_dir():
+                    continue
+                pv = _parse_semver(child.name)
+                if pv is not None:
+                    candidates.append((pv, child.name))
+            if candidates:
+                candidates.sort(key=lambda p: p[0])
+                return candidates[-1][1]
     return "0.0.0"
 
 

@@ -77,15 +77,28 @@ FreeCAD.Console.PrintMessage(
     f"[extrude-ai bootstrap] Loading addon from versions/{_version_dir.name}\n"
 )
 
-def _bootstrap_startup_update_check() -> None:
+def _bootstrap_startup_update_check(
+    _root=_addon_root,  # captured at def-time; safe under FreeCAD exec() globals
+) -> None:
     try:
         import _firstrun  # noqa: PLC0415 — bootstrap root module
 
-        staged = _firstrun.check_for_updates(_addon_root)
+        import _updater  # noqa: PLC0415 — bootstrap-local module
+        if _updater._is_dev_mode(_root / "versions"):
+            FreeCAD.Console.PrintMessage(
+                "[extrude-ai bootstrap] Dev mode — skipping startup update check.\n"
+            )
+            return
+
+        staged = _firstrun.check_for_updates(_root)
         if staged:
             FreeCAD.Console.PrintMessage(
                 f"[extrude-ai bootstrap] Addon v{staged} staged. "
                 "Restart FreeCAD to activate.\n"
+            )
+        else:
+            FreeCAD.Console.PrintMessage(
+                "[extrude-ai bootstrap] Addon is up to date.\n"
             )
     except Exception as exc:
         FreeCAD.Console.PrintMessage(
