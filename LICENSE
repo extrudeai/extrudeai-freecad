@@ -1,3 +1,24 @@
+extrude-ai — License
+
+Copyright (c) 2026 extrude-ai. All rights reserved.
+
+The extrude-ai FreeCAD addon as a whole — including the versioned mixin
+code that the bootstrap downloads at first launch from
+gs://extrude-ai-installer — is PROPRIETARY software. It is NOT open source.
+Except as expressly permitted in writing by extrude-ai, you may not copy,
+modify, distribute, sublicense, reverse engineer, or create derivative
+works of the proprietary components. See https://www.extrudeai.com for the
+applicable terms of use.
+
+-------------------------------------------------------------------------------
+EXCEPTION — MIT-licensed bootstrap files
+-------------------------------------------------------------------------------
+
+ONLY the following small bootstrap "glue" files checked into this repository
+are licensed under the MIT License below:
+
+    InitGui.py, _bootstrap.py, _firstrun.py, _updater.py, package.xml, icon.svg
+
 MIT License
 
 Copyright (c) 2026 extrude-ai
@@ -19,13 +40,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-----
-
-NOTE: The MIT license above covers only the small bootstrap glue files
-checked into this repository (InitGui.py, _bootstrap.py, _firstrun.py,
-_updater.py, package.xml, icon.svg).
-
-The extrude-ai addon as a whole — including the versioned mixin code that
-the bootstrap downloads at first launch from gs://extrude-ai-installer —
-is proprietary software. See https://www.extrudeai.com for terms of use.
